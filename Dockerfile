@@ -12,7 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     OMNIVOICE_LOAD_ASR=0 \
     OMNIVOICE_DOWNLOAD_ASR_AT_BUILD=0 \
     OMNIVOICE_REPO_URL=https://github.com/k2-fsa/OmniVoice.git \
-    OMNIVOICE_REPO_REF=main
+    OMNIVOICE_REPO_REF=master
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -55,9 +55,14 @@ RUN pip3 install --no-cache-dir \
 # Install OmniVoice directly from GitHub (as requested), using clone+local install for robustness.
 RUN set -eux; \
     OMNI_URL="${OMNIVOICE_REPO_URL:-https://github.com/k2-fsa/OmniVoice.git}"; \
-    OMNI_REF="${OMNIVOICE_REPO_REF:-main}"; \
+    OMNI_REF="${OMNIVOICE_REPO_REF:-master}"; \
     echo "Installing OmniVoice from ${OMNI_URL}@${OMNI_REF}"; \
-    git clone --depth 1 --branch "${OMNI_REF}" "${OMNI_URL}" /tmp/omnivoice-src; \
+    if git ls-remote --heads "${OMNI_URL}" "${OMNI_REF}" | grep -q .; then \
+      git clone --depth 1 --branch "${OMNI_REF}" "${OMNI_URL}" /tmp/omnivoice-src; \
+    else \
+      echo "Branch ${OMNI_REF} not found, cloning repo default branch"; \
+      git clone --depth 1 "${OMNI_URL}" /tmp/omnivoice-src; \
+    fi; \
     pip3 install --no-cache-dir --no-deps /tmp/omnivoice-src; \
     rm -rf /tmp/omnivoice-src
 
