@@ -1,4 +1,4 @@
-ARG CUDA_VERSION="12.8.1"
+ARG CUDA_VERSION="12.4.1"
 FROM nvidia/cuda:${CUDA_VERSION}-cudnn-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -30,8 +30,8 @@ RUN apt-get update && \
 
 RUN python3 -m pip install --upgrade pip setuptools wheel
 
-ARG PYTORCH_INDEX_URL="https://download.pytorch.org/whl/cu128"
-ARG TORCH_VERSION="2.8.0+cu128"
+ARG PYTORCH_INDEX_URL="https://download.pytorch.org/whl/cu124"
+ARG TORCH_VERSION="2.6.0+cu124"
 RUN pip3 install --no-cache-dir --index-url ${PYTORCH_INDEX_URL} \
     torch==${TORCH_VERSION} \
     torchaudio==${TORCH_VERSION}
