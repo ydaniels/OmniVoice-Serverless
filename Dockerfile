@@ -41,8 +41,25 @@ WORKDIR /workspace
 COPY requirements.txt /workspace/requirements.txt
 RUN pip3 install --no-cache-dir -r /workspace/requirements.txt
 
-# Install OmniVoice directly from GitHub (as requested).
-RUN pip3 install --no-cache-dir "git+${OMNIVOICE_REPO_URL}@${OMNIVOICE_REPO_REF}"
+# Install OmniVoice runtime dependencies explicitly to avoid resolver issues.
+RUN pip3 install --no-cache-dir \
+    "transformers==5.5.0" \
+    "accelerate>=0.33.0" \
+    "pydub>=0.25.1" \
+    "tensorboardX>=2.6" \
+    "webdataset>=0.2.86" \
+    "numpy>=1.24.0" \
+    "soundfile>=0.12.1" \
+    "sentencepiece>=0.2.0"
+
+# Install OmniVoice directly from GitHub (as requested), using clone+local install for robustness.
+RUN set -eux; \
+    OMNI_URL="${OMNIVOICE_REPO_URL:-https://github.com/k2-fsa/OmniVoice.git}"; \
+    OMNI_REF="${OMNIVOICE_REPO_REF:-main}"; \
+    echo "Installing OmniVoice from ${OMNI_URL}@${OMNI_REF}"; \
+    git clone --depth 1 --branch "${OMNI_REF}" "${OMNI_URL}" /tmp/omnivoice-src; \
+    pip3 install --no-cache-dir --no-deps /tmp/omnivoice-src; \
+    rm -rf /tmp/omnivoice-src
 
 COPY . /workspace
 RUN chmod +x /workspace/start.sh
