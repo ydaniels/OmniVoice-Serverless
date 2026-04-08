@@ -1,0 +1,42 @@
+{
+  "tests": [
+    {
+      "name": "tts_basic_text",
+      "input": {
+        "text": "Hello world from OmniVoice.",
+        "language": "en",
+        "upload_to_s3": false
+      },
+      "timeout": 900000
+    }
+  ],
+  "config": {
+    "gpuTypeId": "NVIDIA GeForce RTX 4090",
+    "gpuCount": 1,
+    "env": [
+      {
+        "key": "OMNIVOICE_MODEL_ID",
+        "value": "k2-fsa/OmniVoice"
+      },
+      {
+        "key": "OMNIVOICE_LOAD_ASR",
+        "value": "0"
+      },
+      {
+        "key": "OMNIVOICE_DOWNLOAD_ASR_AT_BUILD",
+        "value": "0"
+      }
+    ],
+    "allowedCudaVersions": [
+      "12.8",
+      "12.7",
+      "12.6",
+      "12.5",
+      "12.4",
+      "12.3",
+      "12.2",
+      "12.1",
+      "12.0"
+    ]
+  }
+}

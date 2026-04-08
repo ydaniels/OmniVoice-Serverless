@@ -1,5 +1,7 @@
 # OmniVoice RunPod Serverless
 
+[![Runpod](https://api.runpod.io/badge/ydaniels/OmniVoice-Serverless)](https://console.runpod.io/hub/ydaniels/OmniVoice-Serverless)
+
 This repository contains a RunPod Serverless worker for OmniVoice.
 
 ## What it does

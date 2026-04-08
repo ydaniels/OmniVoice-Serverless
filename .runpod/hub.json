@@ -1,0 +1,105 @@
+{
+  "title": "OmniVoice Serverless",
+  "description": "RunPod Serverless worker for OmniVoice TTS with optional S3 upload.",
+  "type": "serverless",
+  "category": "audio",
+  "iconUrl": "https://zhu-han.github.io/omnivoice/pics/omnivoice.jpg",
+  "config": {
+    "runsOn": "GPU",
+    "containerDiskInGb": 40,
+    "presets": [
+      {
+        "name": "Default",
+        "defaults": {
+          "OMNIVOICE_MODEL_ID": "k2-fsa/OmniVoice",
+          "OMNIVOICE_LOAD_ASR": "0",
+          "OMNIVOICE_DOWNLOAD_ASR_AT_BUILD": "0",
+          "S3_PREFIX": "omnivoice/outputs"
+        }
+      },
+      {
+        "name": "With ASR",
+        "defaults": {
+          "OMNIVOICE_MODEL_ID": "k2-fsa/OmniVoice",
+          "OMNIVOICE_LOAD_ASR": "1",
+          "OMNIVOICE_DOWNLOAD_ASR_AT_BUILD": "1",
+          "S3_PREFIX": "omnivoice/outputs"
+        }
+      }
+    ],
+    "env": [
+      {
+        "key": "OMNIVOICE_MODEL_ID",
+        "input": {
+          "name": "Model ID",
+          "type": "string",
+          "description": "Hugging Face model id to load.",
+          "default": "k2-fsa/OmniVoice"
+        }
+      },
+      {
+        "key": "OMNIVOICE_LOAD_ASR",
+        "input": {
+          "name": "Load ASR",
+          "type": "string",
+          "description": "Set 1 to enable Whisper auto-transcription when ref_text is missing.",
+          "default": "0"
+        }
+      },
+      {
+        "key": "S3_BUCKET",
+        "input": {
+          "name": "S3 Bucket",
+          "type": "string",
+          "description": "Optional output bucket for generated WAV uploads.",
+          "default": ""
+        }
+      },
+      {
+        "key": "S3_CUSTOM_DOMAIN",
+        "input": {
+          "name": "S3 Public Domain",
+          "type": "string",
+          "description": "Optional public domain used to build returned public_url.",
+          "default": ""
+        }
+      },
+      {
+        "key": "S3_PREFIX",
+        "input": {
+          "name": "S3 Prefix",
+          "type": "string",
+          "description": "Object key prefix for uploads.",
+          "default": "omnivoice/outputs"
+        }
+      },
+      {
+        "key": "S3_ACCESS_KEY_ID",
+        "input": {
+          "name": "S3 Access Key",
+          "type": "string",
+          "description": "Access key used for S3 upload.",
+          "default": ""
+        }
+      },
+      {
+        "key": "S3_SECRET_ACCESS_KEY",
+        "input": {
+          "name": "S3 Secret Key",
+          "type": "string",
+          "description": "Secret key used for S3 upload.",
+          "default": ""
+        }
+      },
+      {
+        "key": "S3_REGION",
+        "input": {
+          "name": "S3 Region",
+          "type": "string",
+          "description": "Region used by the S3 client and URL fallback.",
+          "default": "us-east-1"
+        }
+      }
+    ]
+  }
+}
